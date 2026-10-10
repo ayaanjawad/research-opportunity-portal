@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Research Portal — Browse and manage undergraduate research opportunities">
+    <title>Research Portal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- ======================================================== -->
+    <!-- WELCOME PAGE VIEW                                        -->
+    <!-- ======================================================== -->
+    <div id="welcomeView" class="welcome-screen">
+        <header class="welcome-nav">
+            <div class="logo">
+                <div class="logo-mark">R</div>
+                <div>
+                    <h1 class="logo-title">Research Portal</h1>
+                </div>
+            </div>
+            <button class="btn btn-outline" id="skipToPortalBtn" type="button">
+                Enter Portal
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="9 18 15 12 9 6"/></svg>
+            </button>
+        </header>
+
+        <main class="welcome-hero">
+            <div class="welcome-badge">
+                <span class="badge-sparkle">✨</span>
+                <span>Undergraduate Research Hub</span>
+            </div>
+
+            <h1 class="welcome-heading">Welcome to the Research Portal</h1>
+
+            <p class="welcome-subheading">
+                Explore faculty-led initiatives, apply for undergraduate assistantships, and discover research projects across university departments.
+            </p>
+
+            <div class="welcome-cta-group">
+                <button class="btn btn-primary btn-lg" id="enterPortalBtn" type="button">
+                    <span>Explore Opportunities</span>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+                </button>
+                <button class="btn btn-secondary btn-lg" id="welcomeNewBtn" type="button">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                    <span>Post Opportunity</span>
+                </button>
+            </div>
+
+            <div class="auto-load-card" id="autoLoadCard">
+                <div class="auto-load-info">
+                    <span class="spinner-dot"></span>
+                    <span>Loading portal in <strong id="countdownText">3s</strong>...</span>
+                </div>
+                <button class="btn-cancel-link" id="cancelAutoLoadBtn" type="button">Pause</button>
+            </div>
+
+            <div class="welcome-features">
+                <div class="feature-card">
+                    <div class="feature-icon">🔍</div>
+                    <h3>Discover Research</h3>
+                    <p>Find cutting-edge labs across Computer Science, AI, Cybersecurity, and more.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🎯</div>
+                    <h3>Real-Time Listings</h3>
+                    <p>Filter by availability, department, required skills, and application deadlines.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🤝</div>
+                    <h3>Faculty Collaboration</h3>
+                    <p>Connect directly with supervising professors and apply for open positions.</p>
+                </div>
+            </div>
+        </main>
+
+        <footer class="welcome-footer">
+            <p>Research Opportunity Portal • Computer Network Assignment 1</p>
+        </footer>
+    </div>
+
+    <!-- ======================================================== -->
+    <!-- MAIN PORTAL APPLICATION VIEW                             -->
+    <!-- ======================================================== -->
+    <div id="portalView" class="portal-screen hidden">
+        <header class="header">
+            <div class="header-inner">
+                <div class="header-top">
+                    <div class="logo logo-clickable" id="portalLogo" title="Back to Welcome Page">
+                        <div class="logo-mark">R</div>
+                        <div>
+                            <h1>Research Portal</h1>
+                            <p class="tagline">Discover undergraduate research opportunities</p>
+                        </div>
+                    </div>
+                    <div class="header-right">
+                        <button class="btn btn-ghost btn-sm" id="backToWelcomeBtn" title="Back to Welcome">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+                            Welcome
+                        </button>
+                        <div class="header-stats" id="headerStats"></div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <main class="container">
+            <div class="toolbar">
+                <div class="search-box">
+                    <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                    </svg>
+                    <input type="text" id="searchInput" placeholder="Search by title, area, faculty or department…">
+                </div>
+                <div class="filter-group">
+                    <select id="filterStatus" class="filter-select">
+                        <option value="all">All Status</option>
+                        <option value="Open">Open</option>
+                        <option value="Closed">Closed</option>
+                    </select>
+                    <select id="filterDept" class="filter-select">
+                        <option value="all">All Departments</option>
+                    </select>
+                </div>
+                <button class="btn btn-primary" id="addBtn">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                    New Opportunity
+                </button>
+            </div>
+
+            <div id="toast" class="toast"></div>
+
+            <div id="opportunitiesGrid" class="grid"></div>
+
+            <div id="emptyState" class="empty-state hidden">
+                <div class="empty-illustration">
+                    <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" opacity=".3">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/>
+                    </svg>
+                </div>
+                <p class="empty-title">No opportunities yet</p>
+                <p class="empty-sub">Click <strong>New Opportunity</strong> to create your first listing.</p>
+            </div>
+        </main>
+    </div>
+
+    <!-- ======================================================== -->
+    <!-- MODALS & OVERLAYS                                        -->
+    <!-- ======================================================== -->
+    <div class="modal-overlay hidden" id="modalOverlay">
+        <div class="modal" role="dialog" aria-labelledby="modalTitle">
+            <div class="modal-header">
+                <h2 id="modalTitle">New Opportunity</h2>
+                <button class="modal-close" id="modalClose" aria-label="Close">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                </button>
+            </div>
+            <form id="opportunityForm" class="modal-body">
+                <input type="hidden" id="editId">
+
+                <div id="formErrors" class="form-errors hidden"></div>
+
+                <div class="form-group">
+                    <label for="title">Title <span class="req">*</span></label>
+                    <input type="text" id="title" placeholder="e.g. AI Research Assistant" required>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="research_area">Research Area <span class="req">*</span></label>
+                        <input type="text" id="research_area" placeholder="e.g. Machine Learning" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="department">Department <span class="req">*</span></label>
+                        <input type="text" id="department" placeholder="e.g. Computer Science" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="description">Description <span class="req">*</span></label>
+                    <textarea id="description" rows="3" placeholder="Describe the research opportunity…" required></textarea>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="faculty_name">Faculty Name <span class="req">*</span></label>
+                        <input type="text" id="faculty_name" placeholder="e.g. Dr. Ahmed Khan" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="required_skills">Required Skills <span class="req">*</span></label>
+                        <input type="text" id="required_skills" placeholder="e.g. Python, Statistics, R" required>
+                    </div>
+                </div>
+
+                <div class="form-row form-row--three">
+                    <div class="form-group">
+                        <label for="available_positions">Available Positions <span class="req">*</span></label>
+                        <input type="number" id="available_positions" min="1" value="1" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="deadline">Deadline <span class="req">*</span></label>
+                        <input type="date" id="deadline" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="status">Status</label>
+                        <select id="status">
+                            <option value="Open">Open</option>
+                            <option value="Closed">Closed</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-ghost" id="cancelBtn">Cancel</button>
+                    <button type="submit" class="btn btn-primary" id="submitBtn">Create</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal-overlay hidden" id="deleteOverlay">
+        <div class="modal modal--sm" role="alertdialog">
+            <div class="modal-header modal-header--danger">
+                <h2>Delete Opportunity</h2>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete this opportunity? This action cannot be undone.</p>
+                <div class="modal-actions">
+                    <button class="btn btn-ghost" id="deleteCancelBtn">Cancel</button>
+                    <button class="btn btn-danger" id="deleteConfirmBtn">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay hidden" id="viewOverlay">
+        <div class="modal" role="dialog" aria-labelledby="viewModalTitle">
+            <div class="modal-header">
+                <h2 id="viewModalTitle">Opportunity Details</h2>
+                <button class="modal-close" id="viewModalClose" aria-label="Close">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                </button>
+            </div>
+            <div class="modal-body" id="viewModalBody"></div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
